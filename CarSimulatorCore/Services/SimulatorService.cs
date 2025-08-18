@@ -63,7 +63,7 @@ namespace CarSimulatorCore.Services
             if (!_car.HasFuel)
                 return BlockedByFuel();
 
-            // ✅ Correct property name
+           
             _car.Consume(_fuelRules.FuelPerMove);
 
             // Forward/Reverse do NOT change facing direction (realistic reversing).
@@ -84,7 +84,7 @@ namespace CarSimulatorCore.Services
 
         private ActionResult DoRefuel()
         {
-            _car.Refuel(_fuelRules.RefuelTo); 
+            _car.Refuel(); 
             _driver.IncreaseFatigue();
             return Snapshot("Refueled to 100%.");
         }

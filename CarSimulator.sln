@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36408.4 d17.14
+VisualStudioVersion = 17.14.36408.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarSimulator", "CarSimulator\CarSimulator.csproj", "{304A42C2-9BDA-469A-B13D-9EF274EE4D7B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarSimulatorCore", "CarSimulatorCore\CarSimulatorCore.csproj", "{64108768-69AD-40CB-838D-B83861AEDCDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CArSimulator.Test", "CArSimulator.Test\CArSimulator.Test.csproj", "{0B61C69E-8E6C-426C-AC32-32D81DABEDCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarSimulator.NunitTest", "CarSimulator.NunitTest\CarSimulator.NunitTest.csproj", "{15E0980B-DC63-472C-807D-9D18266B81CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{64108768-69AD-40CB-838D-B83861AEDCDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64108768-69AD-40CB-838D-B83861AEDCDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64108768-69AD-40CB-838D-B83861AEDCDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B61C69E-8E6C-426C-AC32-32D81DABEDCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B61C69E-8E6C-426C-AC32-32D81DABEDCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B61C69E-8E6C-426C-AC32-32D81DABEDCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B61C69E-8E6C-426C-AC32-32D81DABEDCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15E0980B-DC63-472C-807D-9D18266B81CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15E0980B-DC63-472C-807D-9D18266B81CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15E0980B-DC63-472C-807D-9D18266B81CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15E0980B-DC63-472C-807D-9D18266B81CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

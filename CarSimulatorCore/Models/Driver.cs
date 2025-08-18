@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarSimulatorCore.Models
 {
-    public  class Driver
+    public class Driver
     {
         public string Name { get; private set; }
         public int Fatigue { get; private set; }
@@ -14,29 +10,66 @@ namespace CarSimulatorCore.Models
 
         public Driver(string name, FatigueRules rules, int initialFatigue = 0)
         {
+            if (rules == null) throw new ArgumentNullException(nameof(rules));
+
             Name = string.IsNullOrWhiteSpace(name) ? "Unknown Driver" : name.Trim();
-            Rules = rules ?? throw new ArgumentNullException(nameof(rules));
+            Rules = rules;
             Rules.Validate();
-            Fatigue = Math.Max(0, initialFatigue);
+
+            if (initialFatigue < 0) initialFatigue = 0;
+            Fatigue = initialFatigue;
         }
 
         public void IncreaseFatigue(int amount = 1)
-            => Fatigue = Math.Min(Rules.MaxValue, Fatigue + Math.Max(0, amount));
+        {
+            if (amount < 0) amount = 0;
+
+            int next = Fatigue + amount;
+            if (next > Rules.MaxValue) next = Rules.MaxValue;
+
+            Fatigue = next;
+        }
 
         public void Rest()
-            => Fatigue = Math.Max(0, Fatigue - Rules.RestRecovery);
+        {
+            int next = Fatigue - Rules.RestRecovery;
+            if (next < 0) next = 0;
 
-        public bool IsWarning => Fatigue >= Rules.WarningThreshold && Fatigue < Rules.MaxValue;
-        public bool IsMax => Fatigue >= Rules.MaxValue;
+            Fatigue = next;
+        }
 
-        public string? WarningText =>
-            IsMax ? "ALERT: Driver is at MAX fatigue. Take an urgent rest!"
-          : IsWarning ? "Warning: Driver is getting tired. Consider a rest."
-          : null;
+        public bool IsWarning
+        {
+            get
+            {
+                return Fatigue >= Rules.WarningThreshold && Fatigue < Rules.MaxValue;
+            }
+        }
+
+        public bool IsMax
+        {
+            get
+            {
+                return Fatigue >= Rules.MaxValue;
+            }
+        }
+
+        public string? WarningText
+        {
+            get
+            {
+                if (IsMax) return "ALERT: Driver is at MAX fatigue. Take an urgent rest!";
+                if (IsWarning) return "Warning: Driver is getting tired. Consider a rest.";
+                return null;
+            }
+        }
 
         public void Rename(string name)
         {
-            if (!string.IsNullOrWhiteSpace(name)) Name = name.Trim();
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                Name = name.Trim();
+            }
         }
     }
 }
