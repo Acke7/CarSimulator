@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarSimulatorCore.Enums
 {
@@ -17,8 +13,15 @@ namespace CarSimulatorCore.Enums
     public static class DirectionOps
     {
         public static Direction TurnLeft(this Direction d)
-            => (Direction)(((int)d + 3) % 4); // -1 mod 4
+        {
+            // Turning left is the same as subtracting 1 (or +3 mod 4)
+            return (Direction)(((int)d + 3) % 4);
+        }
+
         public static Direction TurnRight(this Direction d)
-            => (Direction)(((int)d + 1) % 4);
+        {
+            // Turning right is the same as adding 1 (mod 4)
+            return (Direction)(((int)d + 1) % 4);
+        }
     }
 }

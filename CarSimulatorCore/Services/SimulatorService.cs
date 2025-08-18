@@ -2,10 +2,6 @@
 using CarSimulatorCore.Enums;
 using CarSimulatorCore.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarSimulatorCore.Services
 {
@@ -13,96 +9,110 @@ namespace CarSimulatorCore.Services
     {
         private readonly Car _car;
         private readonly Driver _driver;
-        private readonly FuelRules _fuelRules;
+        private readonly FuelRules _rules;
 
-        public SimulatorService(Car car, Driver driver, FuelRules fuelRules)
+        public SimulatorService(Car car, Driver driver, FuelRules rules)
         {
-            _car = car ?? throw new ArgumentNullException(nameof(car));
-            _driver = driver ?? throw new ArgumentNullException(nameof(driver));
-            _fuelRules = fuelRules ?? throw new ArgumentNullException(nameof(fuelRules));
-            _fuelRules.Validate();
+            if (car == null) throw new ArgumentNullException(nameof(car));
+            if (driver == null) throw new ArgumentNullException(nameof(driver));
+            if (rules == null) throw new ArgumentNullException(nameof(rules));
+
+            _car = car;
+            _driver = driver;
+            _rules = rules;
+            _rules.Validate();
         }
 
         public ActionResult Apply(Command command)
         {
-            // Exit is handled by the Console layer (menu), not here.
-            return command switch
+            // Exit is handled in the Console layer (menu).
+            switch (command)
             {
-                Command.TurnLeft => DoTurn(left: true),
-                Command.TurnRight => DoTurn(left: false),
-                Command.Forward => DoMove(forward: true),
-                Command.Reverse => DoMove(forward: false),
-                Command.Rest => DoRest(),
-                Command.Refuel => DoRefuel(),
-                _ => new ActionResult(
-                        "Unknown command.",
-                        _car.Direction,
-                        _car.Fuel,
-                        _driver.Fatigue,
-                        _driver.WarningText)
-            };
+                case Command.TurnLeft:
+                    return DoTurn(true);
+
+                case Command.TurnRight:
+                    return DoTurn(false);
+
+                case Command.Forward:
+                    return DoMove(true);
+
+                case Command.Reverse:
+                    return DoMove(false);
+
+                case Command.Rest:
+                    return DoRest();
+
+                case Command.Refuel:
+                    return DoRefuel();
+
+                default:
+                    return Result("Unknown command.");
+            }
         }
 
         private ActionResult DoTurn(bool left)
         {
             if (!_car.HasFuel)
-                return BlockedByFuel();
+            {
+                return Result("Fuel empty. Please refuel before moving/turning.");
+            }
 
-           
-            _car.Consume(_fuelRules.FuelPerTurn);
+            _car.Consume(_rules.FuelPerTurn);
 
-            if (left) _car.TurnLeft(); else _car.TurnRight();
+            if (left)
+            {
+                _car.TurnLeft();
+            }
+            else
+            {
+                _car.TurnRight();
+            }
+
             _driver.IncreaseFatigue();
 
-            var msg = left ? "Turned left." : "Turned right.";
-            return Snapshot(msg);
+            string message = left ? "Turned left." : "Turned right.";
+            return Result(message);
         }
 
         private ActionResult DoMove(bool forward)
         {
             if (!_car.HasFuel)
-                return BlockedByFuel();
+            {
+                return Result("Fuel empty. Please refuel before moving/turning.");
+            }
 
-           
-            _car.Consume(_fuelRules.FuelPerMove);
+            _car.Consume(_rules.FuelPerMove);
 
             // Forward/Reverse do NOT change facing direction (realistic reversing).
-            // If you want Reverse to flip 180°, change direction here.
-
             _driver.IncreaseFatigue();
 
-            var msg = forward ? "Drove forward." : "Reversed.";
-            return Snapshot(msg);
+            string message = forward ? "Drove forward." : "Reversed.";
+            return Result(message);
         }
 
         private ActionResult DoRest()
         {
-            // Rest does not consume fuel
+            // Rest does not consume fuel.
             _driver.Rest();
-            return Snapshot("Driver rested.");
+            return Result("Driver rested.");
         }
 
         private ActionResult DoRefuel()
         {
-            _car.Refuel(); 
+            _car.Refuel();
             _driver.IncreaseFatigue();
-            return Snapshot("Refueled to 100%.");
+            return Result("Refueled to 100%.");
         }
 
-        private ActionResult BlockedByFuel()
-            => new(
-                "Fuel empty. Please refuel before moving/turning.",
-                _car.Direction,
-                _car.Fuel,
-                _driver.Fatigue,
-                _driver.WarningText);
-
-        private ActionResult Snapshot(string message)
-            => new(
+        private ActionResult Result(string message)
+        {
+            return new ActionResult(
                 message,
                 _car.Direction,
                 _car.Fuel,
                 _driver.Fatigue,
                 _driver.WarningText);
+        }
     }
 }

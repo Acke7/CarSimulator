@@ -51,5 +51,13 @@ namespace CArSimulator.Test
             setup.Sim.Apply(Command.Forward);
             Assert.AreEqual(Direction.North, setup.Car.Direction);
         }
+
+        [TestMethod]
+        public void Reverse_DoesNotChangeDirection()
+        {
+            var setup = TestFactory.Create(fuel: 100);
+            setup.Sim.Apply(Command.Reverse);
+            Assert.AreEqual(Direction.North, setup.Car.Direction);
+        }
     }
 }
