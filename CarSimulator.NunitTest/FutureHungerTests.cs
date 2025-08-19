@@ -25,13 +25,13 @@ namespace CarSimulator.NunitTest
 
             var t = mock.Object;
 
-            t.ApplyAction(); t.ApplyAction(); t.ApplyAction();   // 6
+            t.ApplyAction(); t.ApplyAction(); t.ApplyAction();   
             Assert.That(t.Hunger, Is.EqualTo(6));
 
-            t.Eat();                                            // 0
+            t.Eat();                                            
             Assert.That(t.Hunger, Is.EqualTo(0));
 
-            for (int i = 0; i < 8; i++) t.ApplyAction();         // 16
+            for (int i = 0; i < 8; i++) t.ApplyAction();        
             Assert.That(t.Hunger, Is.GreaterThanOrEqualTo(16));
 
             Assert.Pass("Prepared test via Moq; feature not in app yet.");
