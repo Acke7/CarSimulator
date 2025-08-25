@@ -8,10 +8,10 @@ namespace CarSimulatorCore.Models
         public Direction Direction { get; private set; }
         public int Fuel { get; private set; } // 0–100
 
-        public Car(Direction direction = Direction.North, int fuel = 10)
+        public Car(Direction direction = Direction.North, int fuel = 100)
         {
             Direction = direction;
-            Fuel = Math.Clamp(fuel, 0, 10);
+            Fuel = Math.Clamp(fuel, 0, 100);
         }
         //If Fuel is greater than 0, it returns true.
         public bool HasFuel => Fuel > 0;
@@ -19,7 +19,7 @@ namespace CarSimulatorCore.Models
         public void Refuel()
         {
 
-            Fuel += 10; 
+            Fuel += 100; 
             if (Fuel == 100|| Fuel >100)
             {
                 Fuel = 100;
